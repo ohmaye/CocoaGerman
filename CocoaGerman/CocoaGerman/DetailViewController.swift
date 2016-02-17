@@ -8,8 +8,6 @@
 
 import UIKit
 
-var sharedTextView: UITextView!
-
 
 class DetailViewController: UIViewController, UITextFieldDelegate {
 
@@ -17,7 +15,7 @@ class DetailViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textField: UITextField!
     
-    var exercise: Exercise!
+    var exercise: Bot!
     
     var detailItem: AnyObject? {
         didSet {
@@ -40,12 +38,22 @@ class DetailViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.configureView()
-        sharedTextView = textView
         initializeGermnan()
-        textView.text = "German Significant Others"
-        textField.text = "Type here"
-        exercise = PossessiveBot()
-        printText(exercise.showQuestion())
+        switch detailItem {
+        case "PossessiveBot" as String:
+            textView.text = "Possessive. Easy. Please say the following in German:"
+            textField.text = "Type here"
+            exercise = PossessiveBot()
+            printText(exercise.showQuestion())
+        case "PossessiveRandomBot" as String:
+            textView.text = "Possessive randomly. Harder. Please say the following in German:"
+            textField.text = "Type here"
+            exercise = PossessiveRandomBot()
+            printText(exercise.showQuestion())
+        default: break
+            
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,9 +62,10 @@ class DetailViewController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        printText("---------> " + textField.text!)
+        printText("                                                      EO: " + textField.text!)
         printText(exercise.showAnswer())
         exercise.nextQuestion()
+        printText("")
         printText(exercise.showQuestion())
         textView.scrollRangeToVisible(NSMakeRange(Int.max, 1))
         textField.text = ""

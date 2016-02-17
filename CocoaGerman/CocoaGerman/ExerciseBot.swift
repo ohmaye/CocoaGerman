@@ -38,28 +38,11 @@ print("\(person) " +  verb.conjugate(person, tense: .past))
 }
 */
 
-protocol Exercise {
-    func showQuestion() -> String
-    func showAnswer() -> String
-    func nextQuestion()
-    func restart()
-    
-}
 
-class PossessiveBot: Exercise {
+class Bot {
     var currentItem = 0
     var questionsAndAnswers = [(promt: String, answer: String)]()
     
-    init() {
-        for (person, pronoun) in pronounsDict {
-            for item in 0...3 {
-                let prompt = "SAY: \(pronoun.enPossessive) \(dict[item].en)"
-                let pron = getPossessive(person, aCase: .nominative, aGender: dict[item].gender)
-                let answer = "ANSWER:                 \(pron) \(dict[item].de)"
-                questionsAndAnswers.append((prompt, answer))
-            }
-        }
-    }
     
     func restart() {
         currentItem = 0
@@ -86,19 +69,37 @@ class PossessiveBot: Exercise {
             return "..."
         }
     }
+}
+
+class PossessiveBot: Bot {
     
+    override init() {
+        super.init()
+        for (person, pronoun) in pronounsDict {
+            for item in 0...3 {
+                let prompt = "\(pronoun.enPossessive) \(dict[item].en)"
+                let pron = getPossessive(person, aCase: .nominative, aGender: dict[item].gender)
+                let answer = "--> \(pron) \(dict[item].de)"
+                questionsAndAnswers.append((prompt, answer))
+            }
+        }
+    }
     
 }
 
-func exercisePossessive() {
-    for (person, pronoun) in pronounsDict {
-        for item in 0...3 {
-            print("-")
-            print("SAY:                    \(pronoun.enPossessive) \(dict[item].en)")
-            //           readLine()
-            let pron = getPossessive(person, aCase: .nominative, aGender: dict[item].gender)
-            print("ANSWER:                 \(pron) \(dict[item].de)")
+class PossessiveRandomBot: Bot {
+    
+    override init() {
+        super.init()
+        for (person, pronoun) in pronounsDict {
+            for item in 0...3 {
+                let prompt = "\(pronoun.enPossessive) \(dict[item].en)"
+                let pron = getPossessive(person, aCase: .nominative, aGender: dict[item].gender)
+                let answer = "--> \(pron) \(dict[item].de)"
+                questionsAndAnswers.append((prompt, answer))
+            }
         }
+        questionsAndAnswers = questionsAndAnswers.shuffle()
     }
 }
 

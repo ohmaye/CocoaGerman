@@ -11,7 +11,7 @@ import UIKit
 class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
-    var objects = ["PossessiveBot", "TenseBot"]
+    var objects = ["PossessiveBot", "PossessiveRandomBot"]
 
 
     override func viewDidLoad() {
